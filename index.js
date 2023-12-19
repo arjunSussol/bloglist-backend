@@ -1,11 +1,33 @@
-const express = require('express')
-const app = express()
-const port = 3001
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const morgan = require('morgan');
 
-app.get('/', (req, res) => {
-    res.send('Hellow blog list')
-})
+const app = express();
+const Blog = require('./models/blog');
 
-app.listen(port, () => {
-    console.log(`server is running on port ${port}`)
-})
+const { PORT } = process.env;
+morgan.token('body', (req, res) => JSON.stringify(req.body));
+
+app.use(express.json());
+app.use(morgan(':body :method :status :res[content-length] - :response-time ms'));
+app.use(cors());
+
+app.get('/api/blogs', (req, res) => {
+	Blog
+		.find({})
+		.then(list => res.json(list));
+
+});
+
+app.post('/api/blogs', (req, res) => {
+	const blog = new Blog(req.body);
+	blog
+		.save()
+		.then(savedBlog => res.json(savedBlog));
+
+});
+
+app.listen(PORT, () => {
+	console.log(`server is running on port ${PORT}`);
+});
