@@ -15,3 +15,13 @@ Content-Type: application/json
 {
 	"author": "arjun"
 }
+
+###
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+	"username": "arjun",
+	"name": "Arjun Sah",
+	"password": "arjun"
+}
