@@ -7,3 +7,11 @@ Content-Type: application/json
 	"url": "mongo and express",
 	"likes": 99
 }
+
+###
+PUT http://localhost:3001/api/blogs/65817b5e524feaed1de07c7e
+Content-Type: application/json
+
+{
+	"author": "arjun"
+}
