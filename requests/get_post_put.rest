@@ -21,6 +21,15 @@ Content-Type: application/json
 }
 
 ###
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "arjun",
+	"password": "arjun"
+}
+
+###
 PUT http://localhost:3001/api/blogs/65817b5e524feaed1de07c7e
 Content-Type: application/json
 
