@@ -23,6 +23,8 @@ const errorHandler = (error, request, response, next) => {
 		return response.status(401).json({ error: error.message });
 	} else if (error.name === 'TokenExpiredError') {
 		return response.status(401).json({ error: 'token expired' });
+	} else if (error.name === 'TypeError') {
+		return response.status(401).json({ error: error.message });
 	}
 
 	next(error);
