@@ -35,11 +35,13 @@ describe('initially test to get/post a blog', () => {
 			title: 'Full-stack development',
 			author: 'Arjun',
 			url: 'https://fullstackopen.com/en/#course-contents',
-			likes: 99
+			likes: 99,
+			user: '658d665473ee2062fe374a76'
 		};
 
 		await api
 			.post('/api/blogs')
+			.set({ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY1OGQ2NjU0NzNlZTIwNjJmZTM3NGE3NiIsImlhdCI6MTcwMzgzMjU5NSwiZXhwIjoxNzAzODM2MTk1fQ.iZXidp_HOXX3s_xHr9SWUEX51vwySvX_Wo1YvGX2uW8' })
 			.send(newBlog)
 			.expect(200)
 			.expect('Content-Type', /application\/json/);
@@ -56,11 +58,13 @@ describe('Missing a property from request', () => {
 		const newBlog = {
 			title: 'test if likes is missing, then set to zero',
 			author: 'likes',
-			url: 'https://fullstackopen.com/en/#course-contents'
+			url: 'https://fullstackopen.com/en/#course-contents',
+			user: '658d665473ee2062fe374a76'
 		};
 
 		const savedBlog = await api
 			.post('/api/blogs')
+			.set({ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY1OGQ2NjU0NzNlZTIwNjJmZTM3NGE3NiIsImlhdCI6MTcwMzgzMjU5NSwiZXhwIjoxNzAzODM2MTk1fQ.iZXidp_HOXX3s_xHr9SWUEX51vwySvX_Wo1YvGX2uW8' })
 			.send(newBlog)
 			.expect(200)
 			.expect('Content-Type', /application\/json/);
@@ -73,10 +77,12 @@ describe('Missing a property from request', () => {
 		const newBlog = {
 			title: 'test if likes is missing, then set to zero',
 			author: 'likes',
+			user: '658d665473ee2062fe374a76'
 		};
 
 		await api
 			.post('/api/blogs')
+			.set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY1OGQ2NjU0NzNlZTIwNjJmZTM3NGE3NiIsImlhdCI6MTcwMzgzMjU5NSwiZXhwIjoxNzAzODM2MTk1fQ.iZXidp_HOXX3s_xHr9SWUEX51vwySvX_Wo1YvGX2uW8')
 			.send(newBlog)
 			.expect(400);
 
@@ -92,6 +98,7 @@ describe('deletion of a blog', () => {
 
 		await api
 			.delete(`/api/blogs/${blogToBeDeleted.id}`)
+			.set({ Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY1OGQ2NjU0NzNlZTIwNjJmZTM3NGE3NiIsImlhdCI6MTcwMzgzMjU5NSwiZXhwIjoxNzAzODM2MTk1fQ.iZXidp_HOXX3s_xHr9SWUEX51vwySvX_Wo1YvGX2uW8' })
 			.expect(204);
 
 		const blogsAtEnd = await helper.blogsInDB();
@@ -108,6 +115,7 @@ describe('update a blog', () => {
 		author: 'Edsger',
 		url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
 		likes: 555,
+		user: '658e6d0fae3c674d041392ff'
 	};
 	test('updateing a blog with id', async() => {
 		const blogsAtStart = await helper.blogsInDB();
