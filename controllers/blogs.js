@@ -17,6 +17,10 @@ blogsRouter.post('/', middleware.userExtractor, async (req, res, next) => {
 	const { title, url, likes, author } = req.body;
 	try {
 		const user = req.user;
+		if (!user) {
+			return res.status(401).json({ error: 'operation not permitted' });
+		}
+
 		const blog = new Blog({
 			title,
 			url,
@@ -40,6 +44,10 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (req, res, next) => {
 	try{
 		const user = req.user;
 		const blog = await Blog.findById(req.params.id);
+
+		if (!user || blog.user.toString() !== user.id.toString()) {
+			return res.status(401).json({ error: 'operation not permitted' });
+		}
 
 		if (blog.user.toString() === user.id.toString()) {
 			await Blog.deleteOne({ _id: blog.id });
