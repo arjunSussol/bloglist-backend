@@ -63,11 +63,21 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (req, res, next) => {
 	}
 });
 
-blogsRouter.put('/:id', async (req, res, next) => {
+blogsRouter.put('/:id', middleware.userExtractor, async (req, res, next) => {
 	try {
-		const { title, author, url, likes } = req.body;
-		const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, { title, author, url, likes }, { new: true });
-		res.status(200).json(updatedBlog);
+		const userToken = req.user;
+		const { title, author, url, likes, user } = req.body;
+		if (!userToken || userToken.id.toString() !== user.toString()) {
+			return res.status(401).json({ 'error': 'operation not permitted' });
+		}
+
+		if (userToken.id.toString() === user.toString()) {
+			const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, { title, author, url, likes, user }, { new: true });
+			res.status(200).json(updatedBlog);
+
+			userToken.blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog);
+			await userToken.save();
+		}
 	} catch (error) {
 		next(error);
 	}
